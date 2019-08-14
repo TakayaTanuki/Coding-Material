@@ -1,0 +1,59 @@
+.inputUserName{
+    text-align:center;
+}
+
+.messageWindow{
+    display: none;
+}
+
+h5{
+    font-size: 24px;
+    margin: 0;
+    text-align: center;/*テキストを中央寄せする*/
+}
+
+.selectCommand{
+    display: grid;/*grid layoutを用いる*/
+    grid-template-columns: 1fr 1fr 1fr;
+    /*横幅全体を3分割する。fraction(分数)*/
+    /*background: #ccc;*/
+}
+
+.guhParagraph{
+    text-align:center;
+}
+
+.chokiParagraph{
+    text-align:center;
+}
+
+.pahParagraph{
+    text-align:center;
+}
+
+.resultTable{
+    width: 70%;
+    margin: auto;
+}
+
+table{
+    table-layout: fixed;
+}
+
+td:first-child{
+    width: 50px;
+    height: 40px;
+    text-align: center
+}
+
+td:nth-child(2){
+    width: 200px;
+    height: 40px;
+    text-align: center
+}
+
+td:last-child{
+    width:200px;
+    height:40px;
+    text-align: center
+}

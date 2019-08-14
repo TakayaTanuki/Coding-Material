@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>じゃんけん！！</title>
+    <link rel="stylesheet" href="..\css\janken.css">
+    <script src="..\javascript\janken.js"></script>
+</head>
+
+<body>
+    <!--1段落目(メッセージ表示)-->
+    <!--Divタグにもclassやidを付与できるため、後ほど行うかも？？-->
+    <div class="inputUserName">
+        <form action="javascript:void(0)" name="inputName">
+            <h3>プレイヤー名を入力し、対戦相手を選択して下さい。</h3>
+            <input type="text" name="inputPlayerName">
+            <select id="opponent" name="opponent">
+                <option value="">選択してください。</option>
+                <option value="原田 邦彦">原田 邦彦</option>
+                <option value="土井 健">土井 健</option>
+            </select>
+            <input type="submit" value="OK" name="submit" onclick="changeMessage('none');">
+        </form>
+    </div>
+
+    <div class="messageWindow">
+        <h5>それじゃあ対戦を行うよ！グー、チョキ、パーの中から選んでね！</h5>
+    </div>
+
+    <br>
+
+    <!--2段落目(じゃんけんの画像選択)-->
+    <div>
+        <!--できたら2,3段落目は最初非表示、名前が入力されたら表示できるようにする-->
+        <div class="selectCommand">
+            <!--グーコマンド-->
+            <span class="guhParagraph">
+                <h5>グー</h5>
+                <a href="#" onclick="selectGuh();">
+                    <img src="..\image\guh.jpg" id="guh">
+                </a>
+            </span>
+
+            <!--チョキコマンド-->
+            <span class="chokiParagraph">
+                <h5>チョキ</h5>
+                <a href="#" onclick="selectChoki();">
+                    <img src="..\image\choki.jpg" id="choki">
+                </a>
+            </span>
+
+            <!--パーコマンド-->
+            <span class="pahParagraph">
+                <h5>パー</h5>
+                <a href="#" onclick="selectPah();">
+                    <img src="..\image\pah.jpg" id="pah">
+                </a>
+            </span>
+        </div>
+
+        <!--3段落目(Result表示)-->
+        <div class="resultTable">
+            <h5>戦績</h5>
+            <table border="1" align="center">
+                <!--Player名列-->
+                <tr>
+                    <td class="numberColumn"></td>
+                    <td class="playerName"></td>
+                    <!--<span class="playerName"></span>でも同じ-->
+                    <td class="opponent"></td>
+                </tr>
+                <!--1戦目-->
+                <tr>
+                    <td>1</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <!--2戦目-->
+                <tr>
+                    <td>2</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <!--3戦目-->
+                <tr>
+                    <td>3</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <!--4戦目-->
+                <tr>
+                    <td>4</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <!--5戦目-->
+                <tr>
+                    <td>5</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <!--勝敗-->
+                <tr>
+                    <td>結果</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
