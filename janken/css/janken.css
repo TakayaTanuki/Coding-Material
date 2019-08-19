@@ -1,59 +1,74 @@
 .inputUserName{
     text-align:center;
-}
+    }
+    
+    .messageWindow{
+    display: none;/*メッセージが表示される部分は最初非表示とし、
+    名前入力後表示する*/
+    }
+    
+    .battleWindow{
+    display: none;/*2段落目と3段落目は最初非表示とし、
+    名前入力後表示する*/
+    }
+    
+    .resultMessage{
+        display: none/*結果のメッセージが表示される部分は最初非表示とし、
+        5回目の勝負が終わり次第表示する。*/
+    }
 
-.messageWindow{
-    display: none;
-}
+    .divNextPageButton{
+        text-align: center;
+    }
 
-h5{
+    h5{
     font-size: 24px;
     margin: 0;
     text-align: center;/*テキストを中央寄せする*/
-}
-
-.selectCommand{
+    }
+    
+    .selectCommand{
     display: grid;/*grid layoutを用いる*/
     grid-template-columns: 1fr 1fr 1fr;
     /*横幅全体を3分割する。fraction(分数)*/
     /*background: #ccc;*/
-}
-
-.guhParagraph{
+    }
+    
+    .guhParagraph{
     text-align:center;
-}
-
-.chokiParagraph{
+    }
+    
+    .chokiParagraph{
     text-align:center;
-}
-
-.pahParagraph{
+    }
+    
+    .pahParagraph{
     text-align:center;
-}
-
-.resultTable{
+    }
+    
+    .resultTable{
     width: 70%;
     margin: auto;
-}
-
-table{
+    }
+    
+    table{
     table-layout: fixed;
-}
-
-td:first-child{
+    }
+    
+    td:first-child{
     width: 50px;
     height: 40px;
     text-align: center
-}
-
-td:nth-child(2){
+    }
+    
+    td:nth-child(2){
     width: 200px;
     height: 40px;
     text-align: center
-}
-
-td:last-child{
+    }
+    
+    td:last-child{
     width:200px;
     height:40px;
     text-align: center
-}
+    }
