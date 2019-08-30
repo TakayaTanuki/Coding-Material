@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="ja">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Canvas練習</title>
+
+    <style>
+        #canvas {
+            background: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <script>
+        //Canvas要素を取得
+        const canvas = document.querySelector('#canvas');
+
+        canvas.addEventListener('mousedown', () => {
+            console.log('down');
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            console.log('up');
+        });
+
+        canvas.addEventListener('click', (event) => {
+            console.log('click');
+            const x = event.clientX - canvas.offsetLeft;
+            const y = event.clientY - canvas.offsetTop;
+            console.log(`x:${x},y:${y}`);
+
+            //アロー関数を利用した即時実行関数
+            (() => {
+                //canvas要素のコンテキストオブジェクトを取得
+                const context = canvas.getContext('2d');
+                //context.fillStyleで色を指定
+                context.fillStyle = 'blue';
+                //context.fillRectで塗りつぶされた長方形を描画
+                //第一引数と第二引数に長方形の左上端の X 座標と Y 座標、第三引数に横幅、第四引数に縦幅
+                context.fillRect(x, y, 10, 10);
+
+            })();
+        });
+
+        canvas.addEventListener('mouseover', () => {
+            console.log('mouseover');
+        });
+
+        canvas.addEventListener('mouseout', () => {
+            console.log('mouseout');
+        });
+
+    </script>
+</body>
+
+</html>
