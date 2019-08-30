@@ -270,3 +270,77 @@ function resizeHandler(event) {
     document.querySelector('.value-width').innerHTML = `横幅は ${w}px です`;
     document.querySelector('.value-height').innerHTML = `高さは ${h}px です`;
 }
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>行追加</title>
+</head>
+<script src="displayAnotherInput.js" defer></script>
+<style type="text/css">
+    canvas {
+        border: 1px solid black;
+    }
+</style>
+
+<body>
+    <div>
+        <p class="paragraph1">1 <input type="text" class="inputForm" />
+            <button class="addButton">追加</button>
+            <button class="deleteButton">削除</button>
+        </p>
+        <span class="addInput"></span>
+    </div>
+
+    <canvas class="tutorial" width="150" height="150"></canvas>
+
+</body>
+
+</html>
+
+let index = 1;
+
+// const draw = () => {
+//     var canvas = document.querySelector('.tutorial');
+//     console.log("aaa");
+//     if (canvas.getContext) {
+//         var ctx = canvas.getContext('2d');
+//     }
+// };
+
+// 
+// 通常の関数式の場合、(function () { /* 関数本体 */ }());
+// と書いても(function () { /* 関数本体 */ })(); の様に書いてもどちらも即時実行されるのですが、アロー関数の場合は
+// (() => { /* 関数本体 */ })();
+// の様に記述しなければならないようです。
+// 
+
+document.querySelector('.addButton').addEventListener('click', () => {
+    index++;
+    console.log(index);
+    document.querySelector('.addInput').innerHTML +=
+        `<p class="paragraph${index}">${index} <input type="text" class="inputForm" /></p>`;
+    //アロー関数と即時実行関数の組み合わせ
+    (() => {
+        var canvas = document.querySelector('.tutorial');
+        console.log("aaa");
+        if (canvas.getContext) {
+            var ctx = canvas.getContext('2d');
+        }
+    })();
+});
+
+document.querySelector('.deleteButton').addEventListener('click', (event) => {
+    if (index > 1) {
+        console.log(event);
+        //const parentDeleteElement = document.querySelector('.addInput');
+        const deleteElement = document.querySelector(`.paragraph${index}`);
+        deleteElement.remove();
+        index--;
+        console.log(index);
+    } else {
+        console.log('これ以上削除できません');
+    }
+});
