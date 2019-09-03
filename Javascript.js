@@ -271,7 +271,9 @@ function resizeHandler(event) {
     document.querySelector('.value-height').innerHTML = `高さは ${h}px です`;
 }
 
-<!DOCTYPE html>
+///////////////////////////////////////////////////////////////
+//ボタンを追加するhtmlとjs
+/*<!DOCTYPE html>
 <html lang="ja">
 
 <head>
@@ -298,7 +300,7 @@ function resizeHandler(event) {
 
 </body>
 
-</html>
+</html>*/
 
 let index = 1;
 
