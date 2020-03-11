@@ -25,13 +25,106 @@
     ⇒これは
     　例文
     　です
-    https://www.early2home.com/blog/os/linux/post-1057.html
-    https://tomcat.apache.org/download-90.cgi
-    https://weblabo.oscasierra.net/installing-tomcat9-centos7-1/
-    https://weblabo.oscasierra.net/tomcat-mod-proxy-ajp/
-    https://www.task-notes.com/entry/20150702/1435806000
-    https://tokkan.net/web/first.html
-https://nona.to/fswiki/Tomcat+%A5%AF%A5%E9%A5%A4%A5%A2%A5%F3%A5%C8IP%C0%DC%C2%B3%C0%A9%B8%E6.html
+    ＜Apache Tomcat をlinuxにインストール＞
+○Tomcatのダウンロード
+スーパーユーザーに
+・sudo su -
+
+・man wget
+⇒wget(指定したURLからファイルをダウンロード)
+
+wgetがない場合
+・yum install wget
+
+・cd /tmp
+
+・wget http://ftp.kddilabs.jp/infosystems/apache/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
+
+Linux 上で Tomcat を動かすための専用ユーザとして tomcat を追加
+・useradd -s /sbin/nologin tomcat
+
+ユーザー一覧を確認
+・cat /etc/passwd
+
+Tomcatの解凍
+tar -xzvf apache-tomcat-9.0.X.tar.gz
+
+mv apache-tomcat-9.0.X /opt
+
+Tomcatの所有者とグループを設定
+chown -R tomcat:tomcat /opt/apache-tomcat-9.0.XX
+
+/etc/systemd/system/tomcat.serviceを新たに作成するために
+・cd /etc/systemd/system/
+・vim tomcat.service
+書き込む内容(()はどっちでもいい)
+----------------------------------------
+[Unit]
+Description=Apache Tomcat 9
+After=(syslog.target) network.target
+
+[Service]
+User=tomcat
+Group=tomcat
+Type=oneshot
+PIDFile=/opt/apache-tomcat-9.0.X/tomcat.pid
+RemainAfterExit=yes
+
+ExecStart=/opt/apache-tomcat-9.0.X/bin/startup.sh
+ExecStop=/opt/apache-tomcat-9.0.X/bin/shutdown.sh
+ExecReStart=/opt/apache-tomcat-9.0.X/bin/shutdown.sh;/opt/apache-tomcat-9.0.X/bin/startup.sh
+
+[Install]
+WantedBy=multi-user.targe
+------------------------------------------
+作成した定義ファイルの権限を755に変更
+・chmod 755 /etc/systemd/system/tomcat.service
+
+サービスに登録(自動起動が有効になる)
+・systemctl enable tomcat
+
+Tomcatを起動
+・systemctl start tomcat
+Tomcatを停止
+systemctl stop tomcat
+
+ローカル端末からホストOSにアクセスする方法
+virtual boxでポートフォワーディングを設定
+Tomcatは8080なので、例えばローカルの28080に通信を飛ばすとホストの8080に通信を行うというように設定できる。
+なので、ローカルでhttp://127.0.0.1:28080を指定すればホストのTomcatに接続できる
+
+○Tomcatにhtmlファイルを配備、アクセス
+\webapps\examplesまで移動し、vim test.htmlとして以下を記入
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>test</title>
+</head>
+
+<body>
+Now testing...
+</body>
+</html>
+
+○ApacheとTomcatの連携
+https://weblabo.oscasierra.net/tomcat-mod-proxy-ajp/
+
+https://www.task-notes.com/entry/20150702/1435806000
+・vim /etc/httpd/conf/httpd.conf
+最後尾に追加
+ProxyPass /tomcat/ ajp://localhost:8009/
+ProxyPass /examples/ ajp://localhost:8009/examples/
+
+・service httpd restart
+
+ブラウザでhttp://<IPアドレス>/tomcat/にアクセスすると tomcat の画面に、http://<IPアドレス>/tomcat/examples/にアクセスするとサンプルプログラムに、8080 が無くてもアクセスできるようになりました。
+
+http://sakusaku-techs.com/apache-tomcat/apche-connect/
+https://qiita.com/nkojima/items/7a8dd5c5e1d3c032178c
+linux netconsole モジュールは読み込まれていません。
     -->
     
 </body>
