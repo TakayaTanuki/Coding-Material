@@ -24,8 +24,7 @@
     例：これは<div>例文</div>です
     ⇒これは
     　例文
-    　です
-    ＜Apache Tomcat をlinuxにインストール＞
+    　です＜Apache Tomcat をlinuxにインストール＞
 ○Tomcatのダウンロード
 スーパーユーザーに
 ・sudo su -
@@ -35,6 +34,15 @@
 
 wgetがない場合
 ・yum install wget
+
+----------------------------------------------------------------------------------
+jdkがない場合
+wget https://download.java.net/java/ga/jdk11/openjdk-11_linux-x64_bin.tar.gz
+tar zxf openjdk-11_linux-x64_bin.tar.gz -C /usr/local⇒ここ任意の場所
+(環境変数の設定)
+export JAVA_HOME=/usr/local/jdk-11
+export PATH=$PATH:/usr/local/jdk-11/bin
+----------------------------------------------------------------------------------
 
 ・cd /tmp
 
@@ -110,21 +118,19 @@ Now testing...
 </html>
 
 ○ApacheとTomcatの連携
-https://weblabo.oscasierra.net/tomcat-mod-proxy-ajp/
+・/etc/httpd/conf/httpd.conf＝configファイル
+ここで2つのファイルを読み込んでいる、ファイルの内容によっては変えなくてもいい？？？
 
-https://www.task-notes.com/entry/20150702/1435806000
-・vim /etc/httpd/conf/httpd.conf
-最後尾に追加
-ProxyPass /tomcat/ ajp://localhost:8009/
-ProxyPass /examples/ ajp://localhost:8009/examples/
+・/etc/httpd/conf.d/proxy-ajp.conf
+#アクセス元：http://localhost/docs
+#↓
+#転送先：http://localhost:8009(8080)/
+<Location /docs>
+ProxyPass ajp://localhost:8009/
 
-・service httpd restart
-
-ブラウザでhttp://<IPアドレス>/tomcat/にアクセスすると tomcat の画面に、http://<IPアドレス>/tomcat/examples/にアクセスするとサンプルプログラムに、8080 が無くてもアクセスできるようになりました。
-
-http://sakusaku-techs.com/apache-tomcat/apche-connect/
-https://qiita.com/nkojima/items/7a8dd5c5e1d3c032178c
-linux netconsole モジュールは読み込まれていません。
+・/etc/httpd/conf.modules.d/00-proxy.conf
+利用するモジュールがコメントアウトされていないように
+https://www.adminweb.jp/apache/tomcat/index3.html
     -->
     
 </body>
