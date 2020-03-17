@@ -24,7 +24,8 @@
     例：これは<div>例文</div>です
     ⇒これは
     　例文
-    　です＜Apache Tomcat をlinuxにインストール＞
+    　です
+＜Apache Tomcat をlinuxにインストール＞
 ○Tomcatのダウンロード
 スーパーユーザーに
 ・sudo su -
@@ -131,6 +132,48 @@ ProxyPass ajp://localhost:8009/
 ・/etc/httpd/conf.modules.d/00-proxy.conf
 利用するモジュールがコメントアウトされていないように
 https://www.adminweb.jp/apache/tomcat/index3.html
+
+
+○GitLabのインストール
+https://www.gitlab.jp/installation/
+
+sudo yum install -y curl policycoreutils-python openssh-server
+sudo systemctl enable sshd
+sudo systemctl start sshdsudo firewall-cmd --permanent --add-service=http
+sudo systemctl reload firewalld
+
+※メールサーバを設置する場合
+sudo yum install postfix
+sudo systemctl enable postfix
+sudo systemctl start postfix
+
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash
+※community editionをダウンロードしたい場合、ce
+
+sudo EXTERNAL_URL="http://gitlab.example.com" yum install -y gitlab-ee
+⇒URLはhttp://サーバのIPアドレス(10.0.2.15:10080)
+※community editionをダウンロードしたい場合、ce
+
+・IPアドレスを変更したい場合
+vim /etc/gitlab/gitlab.rb　を行い、IPを変更。その後、
+gitlab-ctl reconfigure
+※gitlab-ctl restart⇒これするとgitlabが502のエラー発生。
+
+https://docs.gitlab.com/ee/ssh/
+
+○ターミナルからのアクセス設定
+ssh-keygen -t rsa
+
+cat ~~/.ssh/id_rsa.pub で公開鍵を登録する
+
+gitlabと認証と通信を行う
+ssh -T git@10.0.2.15(ホスト)
+
+gitのインストール
+yum install git
+
+mkdir でローカルリポジトリとする
+
     -->
     
 </body>
