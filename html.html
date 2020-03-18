@@ -174,6 +174,36 @@ yum install git
 
 mkdir でローカルリポジトリとする
 
+
+
+chcp 65001
+@echo off
+echo "【強化IT】reservation-api"
+rem call C:\Users\tenit\Desktop\call.bat
+rem echo %errorlevel%
+curl -s -X GET https://api.github.com/zen -o /dev/null -w \r\nSTATUS_CODE:%%{http_code}\r\n -H "x-api-key: 1" -H "Content-Type: application/json" -d "{}"
+
+rem 元のやつ
+for /f "usebackq tokens=1" %%i in (`curl -s https://api.github.com/zen -X GET -o /dev/null -w \r\n%%{http_code}\r\n`) do set httpStatus=%%i
+echo %httpStatus%
+rem 200番が返って来るか確認
+rem curl --insecure http://localhost/ -X GET -w \r\nSTATUS_CODE:%%{http_code}\r\n -s | find /i "STATUS_CODE:200"
+
+if %httpStatus% == 200 (
+ 	echo アクセスOKでexit0
+    pause
+    exit 0
+) else (
+    echo %httpStatus%でexit1
+    pause
+    exit 1
+)
+pause
+https://qiita.com/mazgi/items/585348b6cdff3e320726
+https://qiita.com/tomotagwork/items/5b9e08f28d5925d96b5f
+https://qiita.com/yasuhiroki/items/a569d3371a66e365316f
+https://juraku-software.net/curl-win-bat-url-access-result-200/
+https://qiita.com/kshibamo/items/9368b0b2a4a2f40b61f1
     -->
     
 </body>
