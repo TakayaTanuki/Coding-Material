@@ -25,6 +25,185 @@
     ⇒これは
     　例文
     　です
+＜Apache Tomcat をlinuxにインストール＞
+○Tomcatのダウンロード
+スーパーユーザーに
+・sudo su -
+
+・man wget
+⇒wget(指定したURLからファイルをダウンロード)
+
+wgetがない場合
+・yum install wget
+
+----------------------------------------------------------------------------------
+jdkがない場合
+wget https://download.java.net/java/ga/jdk11/openjdk-11_linux-x64_bin.tar.gz
+tar zxf openjdk-11_linux-x64_bin.tar.gz -C /usr/local⇒ここ任意の場所
+(環境変数の設定)
+export JAVA_HOME=/usr/local/jdk-11
+export PATH=$PATH:/usr/local/jdk-11/bin
+----------------------------------------------------------------------------------
+
+・cd /tmp
+
+・wget http://ftp.kddilabs.jp/infosystems/apache/tomcat/tomcat-9/v9.0.31/bin/apache-tomcat-9.0.31.tar.gz
+
+Linux 上で Tomcat を動かすための専用ユーザとして tomcat を追加
+・useradd -s /sbin/nologin tomcat
+
+ユーザー一覧を確認
+・cat /etc/passwd
+
+Tomcatの解凍
+tar -xzvf apache-tomcat-9.0.X.tar.gz
+
+mv apache-tomcat-9.0.X /opt
+
+Tomcatの所有者とグループを設定
+chown -R tomcat:tomcat /opt/apache-tomcat-9.0.XX
+
+/etc/systemd/system/tomcat.serviceを新たに作成するために
+・cd /etc/systemd/system/
+・vim tomcat.service
+書き込む内容(()はどっちでもいい)
+----------------------------------------
+[Unit]
+Description=Apache Tomcat 9
+After=(syslog.target) network.target
+
+[Service]
+User=tomcat
+Group=tomcat
+Type=oneshot
+PIDFile=/opt/apache-tomcat-9.0.X/tomcat.pid
+RemainAfterExit=yes
+
+ExecStart=/opt/apache-tomcat-9.0.X/bin/startup.sh
+ExecStop=/opt/apache-tomcat-9.0.X/bin/shutdown.sh
+ExecReStart=/opt/apache-tomcat-9.0.X/bin/shutdown.sh;/opt/apache-tomcat-9.0.X/bin/startup.sh
+
+[Install]
+WantedBy=multi-user.targe
+------------------------------------------
+作成した定義ファイルの権限を755に変更
+・chmod 755 /etc/systemd/system/tomcat.service
+
+サービスに登録(自動起動が有効になる)
+・systemctl enable tomcat
+
+Tomcatを起動
+・systemctl start tomcat
+Tomcatを停止
+systemctl stop tomcat
+
+ローカル端末からホストOSにアクセスする方法
+virtual boxでポートフォワーディングを設定
+Tomcatは8080なので、例えばローカルの28080に通信を飛ばすとホストの8080に通信を行うというように設定できる。
+なので、ローカルでhttp://127.0.0.1:28080を指定すればホストのTomcatに接続できる
+
+○Tomcatにhtmlファイルを配備、アクセス
+\webapps\examplesまで移動し、vim test.htmlとして以下を記入
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>test</title>
+</head>
+
+<body>
+Now testing...
+</body>
+</html>
+
+○ApacheとTomcatの連携
+・/etc/httpd/conf/httpd.conf＝configファイル
+ここで2つのファイルを読み込んでいる、ファイルの内容によっては変えなくてもいい？？？
+
+・/etc/httpd/conf.d/proxy-ajp.conf
+#アクセス元：http://localhost/docs
+#↓
+#転送先：http://localhost:8009(8080)/
+<Location /docs>
+ProxyPass ajp://localhost:8009/
+
+・/etc/httpd/conf.modules.d/00-proxy.conf
+利用するモジュールがコメントアウトされていないように
+https://www.adminweb.jp/apache/tomcat/index3.html
+
+
+○GitLabのインストール
+https://www.gitlab.jp/installation/
+
+sudo yum install -y curl policycoreutils-python openssh-server
+sudo systemctl enable sshd
+sudo systemctl start sshdsudo firewall-cmd --permanent --add-service=http
+sudo systemctl reload firewalld
+
+※メールサーバを設置する場合
+sudo yum install postfix
+sudo systemctl enable postfix
+sudo systemctl start postfix
+
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh | sudo bash
+※community editionをダウンロードしたい場合、ce
+
+sudo EXTERNAL_URL="http://gitlab.example.com" yum install -y gitlab-ee
+⇒URLはhttp://サーバのIPアドレス(10.0.2.15:10080)
+※community editionをダウンロードしたい場合、ce
+
+・IPアドレスを変更したい場合
+vim /etc/gitlab/gitlab.rb　を行い、IPを変更。その後、
+gitlab-ctl reconfigure
+※gitlab-ctl restart⇒これするとgitlabが502のエラー発生。
+
+https://docs.gitlab.com/ee/ssh/
+
+○ターミナルからのアクセス設定
+ssh-keygen -t rsa
+
+cat ~~/.ssh/id_rsa.pub で公開鍵を登録する
+
+gitlabと認証と通信を行う
+ssh -T git@10.0.2.15(ホスト)
+
+gitのインストール
+yum install git
+
+mkdir でローカルリポジトリとする
+
+
+
+chcp 65001
+@echo off
+echo "【強化IT】reservation-api"
+rem call C:\Users\tenit\Desktop\call.bat
+rem echo %errorlevel%
+curl -s -X GET https://api.github.com/zen -o /dev/null -w \r\nSTATUS_CODE:%%{http_code}\r\n -H "x-api-key: 1" -H "Content-Type: application/json" -d "{}"
+
+rem 元のやつ
+for /f "usebackq tokens=1" %%i in (`curl -s https://api.github.com/zen -X GET -o /dev/null -w \r\n%%{http_code}\r\n`) do set httpStatus=%%i
+echo %httpStatus%
+rem 200番が返って来るか確認
+rem curl --insecure http://localhost/ -X GET -w \r\nSTATUS_CODE:%%{http_code}\r\n -s | find /i "STATUS_CODE:200"
+
+if %httpStatus% == 200 (
+ 	echo アクセスOKでexit0
+    pause
+    exit 0
+) else (
+    echo %httpStatus%でexit1
+    pause
+    exit 1
+)
+pause
+https://qiita.com/mazgi/items/585348b6cdff3e320726
+https://qiita.com/tomotagwork/items/5b9e08f28d5925d96b5f
+https://qiita.com/yasuhiroki/items/a569d3371a66e365316f
+https://juraku-software.net/curl-win-bat-url-access-result-200/
+https://qiita.com/kshibamo/items/9368b0b2a4a2f40b61f1
     -->
 
     <!--
