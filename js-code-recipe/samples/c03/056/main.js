@@ -14,7 +14,7 @@ const searchResult = document.querySelector('#search-result');
 // 文字が入力される度に、内容のチェックを行う
 searchIdInput.addEventListener('keyup', () => {
   // 検索IDを取得する
-  const searchId = Number(event.target.value);
+  const searchId = Number(searchIdInput.value);
   findUser(searchId);
 });
 

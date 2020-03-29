@@ -2,7 +2,7 @@
 const btn = document.querySelector('button');
 // ボタンをクリックしたとき
 btn.addEventListener('click', (event) => {
-  const text = prompt('今日の天気は？', '');
+  const text = prompt('今日の天気は？', 'aaa');
   // ユーザーが入力した文字列を画面に表示
   document.querySelector('.log').innerHTML = text;
 });

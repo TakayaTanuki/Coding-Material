@@ -9,7 +9,9 @@ const userDataList = [
 
 // .button要素についてイベント設定
 document.querySelectorAll('.button').forEach((element) => {
+  console.log(element);
   element.addEventListener('click', (event) => {
+    console.log(event);
     onClickButton(event);
   });
 });

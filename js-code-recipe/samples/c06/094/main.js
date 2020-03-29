@@ -1,6 +1,11 @@
 // ボタンの参照
 const btn = document.querySelector('button');
 
+btn.addEventListener('click', () => {
+  alert('こんにちは.\nあああ')
+});
+
+
 // ボタンをクリックしたとき
 btn.addEventListener('click', (event) => {
   // アラートを表示

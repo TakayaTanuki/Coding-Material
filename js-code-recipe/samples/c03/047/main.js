@@ -8,13 +8,12 @@ const userList = [
 // コンテナー
 const container = document.querySelector('.container');
 
-// userListの配列の各要素についてループ
 userList.forEach((userData) => {
-  // 各要素を書き出す
+
   container.innerHTML += `
-        <div class="card">
-          <h2>${userData.name}</h2>
-          <p>出身地：${userData.address}</p>
-        </div>
-  `;
+    <div class ="card">
+      <h2>${userData.name}</h2>
+      <p>出身地:${userData.address}</p>
+    </div>
+    `;
 });
