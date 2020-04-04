@@ -41,7 +41,11 @@ wgetがない場合
 ----------------------------------------------------------------------------------
 jdkがない場合
 wget https://download.java.net/java/ga/jdk11/openjdk-11_linux-x64_bin.tar.gz
-tar zxf openjdk-11_linux-x64_bin.tar.gz -C /usr/local⇒ここ任意の場所
+tar xzf openjdk-11_linux-x64_bin.tar.gz -C /usr/local⇒ここ任意の場所
+x=extract
+※圧縮する場合は
+tar czf ~~.tar.gz <directory>
+c=create
 (環境変数の設定)
 export JAVA_HOME=/usr/local/jdk-11
 export PATH=$PATH:/usr/local/jdk-11/bin
@@ -171,8 +175,14 @@ cat ~~/.ssh/id_rsa.pub で公開鍵を登録する
 gitlabと認証と通信を行う
 ssh -T git@10.0.2.15(ホスト)
 
-gitのインストール
+○gitのインストール
 yum install git
+
+・gitの初期設定(commitした際、登録した名前が表示される)
+git config --global user.name '~~~'
+git config --global user.email '~~~'
+git config --global color.ui auto
+⇒カラー出力を有効に
 
 mkdir でローカルリポジトリとする
 
@@ -205,6 +215,36 @@ https://qiita.com/tomotagwork/items/5b9e08f28d5925d96b5f
 https://qiita.com/yasuhiroki/items/a569d3371a66e365316f
 https://juraku-software.net/curl-win-bat-url-access-result-200/
 https://qiita.com/kshibamo/items/9368b0b2a4a2f40b61f1
+
+<ダウンロードするコマンドについて>
+□yumとapt
+パッケージファイル(ソフトウェアの実行ファイル・ドキュメント・設定ファイル・インストール時に必要なスクリプトなどをまとめてアーカイブした1つのファイル)
+を集めて配布しているサイト(リポジトリ)からパッケージ情報やパッケージファイルを取得し、インストールする。
+・yum…RedHatやCentOSではrpmというパッケージ形式が採用されている。その基本となるrpmコマンドは単純な操作しかできず、不便なため、
+yumが広く利用される。パッケージの依存性の解決を自動的に行ってくれる(例えば、httpdのパッケージをインストールする際、httpd以外にも
+aprなどhttpdを動作させるために必要なパッケージもインストールしてくれる)
+・apt…DebianやUbuntuではdebというパッケージ形式が採用されている。こちらもdpkgコマンドが提供されているがaptが広く利用される。こちらも
+インストール時に依存性の解決を自動的にしてくれる。
+
+□curlとwget
+・curl…対応しているプロトコルには、
+FTP、FTPS、Gopher、HTTP、HTTPS、SCP、SFTP、TFTP、TELNET、DICT、LDAP、LDAPS、FILE、POP3、IMAP、SMB/CIFS、SMTP、RTMP、RTSP
+
+・wget…対応しているプロトコルは、HTTP・HTTPS・FTPのみ。再帰的にファイルをダウンロード可能。
+※再帰的とは：あるコマンドは「ディレクトリ内に存在するものに一つ一つに対して処理をする」という前提をもとに動作する。
+そして、再帰的オプションをつけた場合のそのコマンドの動作は、
+
+まず、ディレクトリ内に存在するものに一つ一つに対して処理をする。
+その際、その一つがディレクトリだったら、、、
+そのディレクトリ内に存在するものに一つ一つに対して処理をする。
+その際、その一つがディレクトリだったら、、、
+そのディレクトリ内に存在するものに一つ一つに対して処理をする。
+その際、...
+
+という処理になる。つまり複数のリンクを辿ってダウンロードする必要のあるものはwgetでダウンロードする必要がある。
+
+
+
     -->
 
 
