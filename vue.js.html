@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--CDNによるvuejsの利用-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+    <style type="text/css">
+        .error {
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!--
+    VSCODEのショートカット
+    !+Tabでhtmlドキュメント自動作成
+    shift+alt+fでhtmlドキュメント整形
+    -->
+
+    <div id="app">
+        {{message}}<br>
+        {{items[0].name}}
+    </div>
+    <div id="bind">
+        <button v-bind:title="loggedInButton">購入</button>
+        <div>{{totalPrice}}</div>
+        <!--★v-onでJSのイベントを発火させる-->
+        <button v-on:click="countUp">1追加</button>
+        <!--★v-ifやv-showで条件付きレンダリングを行う。それぞれはどう実現しているのかが異なる。
+        v-ifは式の結果に応じてDOM要素を追加・削除するのに対して、v-showはスタイルのdisplayプロパティの値を変更することで実現する。
+        DOM操作のレンダリングコストは大変なので頻繁に式の結果が変わる場合はv-show、そうでない場合はv-if
+        -->
+        <p v-if='ok'>{{count}}</p>
+        <!--:classはv-bind:classの省略形。初めはerror:falseのため、class属性値はないが、ボタンを押していくとclass=errorとなる-->
+        <p v-else='no' :class="{error:!ok}">'失敗'</p>
+
+    </div>
+
+    <script>
+
+        //先にitemsを変数宣言しないとVueインスタンス作成でミスる
+        const items = [
+            {
+                name: '鉛筆',
+                price: 300,
+                quantity: 0
+            },
+            {
+                name: 'ノート',
+                price: 400,
+                quantity: 0
+            },
+            {
+                name: '消しゴム',
+                price: 500,
+                quantity: 0
+            }
+        ]
+
+        //Vueインスタンスの生成
+        const vm = new Vue({
+            /*★dataプロパティ…UIの状態となるデータのオブジェクトを指定する。
+            値を処理する関数やデータから派生した値を計算する関数はdataには含めない。*/
+            data() {
+                return {
+                    message: 'Hello Vue JS!',
+                    items: items,
+                }
+            },
+        })
+        //elプロパティを定義しない場合、$mountを利用してVueインスタンスを指定した(今回だとid=appのDOM)DOM要素にマウントする。
+        vm.$mount('#app');
+
+        //Vueインスタンスの変更を検知して、それをもとに動作するメソッド
+        vm.$watch(
+            //第1引数に監視対象の値を返す関数
+            function () {
+                return this.items[0].quantity;
+            },
+            //第2引数には値が変わった時に呼ばれるコールバック関数
+            function (quantity) {
+                alert('quantityの値が' + quantity + 'に変更されました');
+            }
+        )
+
+        /*★vi-bindは属性の展開を行う。今回だと、"title(属性)=ログイン済みのために購入できます。"と属性値が変化する。
+        Javascript式も1つは記載できる。*/
+        const vmButton = new Vue({
+            data() {
+                return {
+                    loggedInButton: 'ログイン済みのために購入できます。',
+                    count: 0,
+                    ok: true,
+                    no: true,
+                }
+            },
+            methods: {
+                countUp() {
+                    this.count += 1;
+                    if (this.count > 3) {
+                        this.ok = false;
+                    }
+                }
+            },
+            /*★computed(算出プロパティ)は、データそのものに何らかの処理を与えたものをプロパティにしたい
+            (インスタンスに持たせて参照できるようにしたい)ときに利用する。主に、複雑な式をテンプレートに記述する。*/
+            computed: {
+                totalPrice: function () {
+                    /*this(Vueインスタンス自身)経由でインスタンンス内のデータにアクセス
+                    thisは呼び出された関数に依存する。今回だとvmインスタンスにはthisを使ってアクセスできないが、
+                    呼び出されているvmButtonインスタンスにはthisを使って呼び出されている。
+                    */
+                    return this.count > 3 ? '3より上' : '3より下'
+
+                }
+            },
+        }).$mount('#bind');
+
+        //dataに与えたitemsも参照可能
+        console.log(vm.items);
+        console.log(vmButton.loggedInButton);
+        console.log(vmButton.totalPrice);
+
+    </script>
+
+</body>
+
+</html>
