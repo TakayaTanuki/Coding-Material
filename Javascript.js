@@ -346,3 +346,70 @@ document.querySelector('.deleteButton').addEventListener('click', (event) => {
         console.log('これ以上削除できません');
     }
 });
+
+//非同期通信の順序確認
+
+// ★async function（asyncで宣言した非同期関数）は何をするのか
+// ・async functionは呼び出されるとPromiseを返す。
+// ・async functionが値をreturnした場合、Promiseは戻り値をresolveする。
+// ・async functionが例外や何らかの値をthrowした場合はその値をrejectする。
+
+// ★awaitは何をするのか
+// ・awaitを指定した関数のPromiseの結果が返されるまで、async function内の処理を一時停止する。
+// ・結果が返されたらasync function内の処理を再開する。
+
+//最初に実行されるメソッド・getList
+//asyncを付けることで非同期で動作する
+// import axios from 'axios';
+
+const axios = require('axios');
+
+async function getList() {
+    console.log(1);
+    await getRequest();
+    const item = await fetchList();
+    //最後に実施
+    console.log(10);
+}
+//非同期で実施
+async function fetchList() {
+    console.log(2);
+    //awaitなのでpromiseが返ってくるまで待つ
+    // const list = fetchListAPI(); // awaitしない場合、次のconsole.log(list)を先に読み込んでしまう。
+    const list = await fetchListAPI();
+    console.log(list);
+    await dispatchDone();
+    console.log(9);
+    return list;
+}
+async function dispatchDone() {
+    console.log(5);
+    await total();
+    async function total() {
+        console.log(6);
+        const list = await listAPI();
+        await getRequest();
+        console.log(8);
+    }
+}
+async function fetchListAPI() {
+    console.log(3);
+    await getRequest();
+    return 4;
+}
+function listAPI() {
+    console.log(7);
+}
+
+async function getRequest() {
+    let response;
+    try {
+        response = await axios.get('https://cat-fact.herokuapp.com/facts?animal_type=cat&amount=2');
+        console.log(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+getList();
+
