@@ -1,0 +1,59 @@
+GitCommand
+
+【git add】
+git add -A #すべてのファイル・ディレクトリ
+git add -u #変更されたファイルを追加する
+git rm --cached #addしてしまったファイルを除外
+
+【git commit】
+git commit -a -m '<message>' #変更のあったファイルすべて
+git commit --amend #直前のコミットを取り消す
+
+【git branch】
+git branch [branch_name]  #ブランチの作成
+git checkout [branch_name]  #ブランチの移動
+git checkout -b [branch_name] #ブランチの作成と移動
+git branch -d [branch_name]  #ブランチの削除
+git branch -m [branch_name]  #現在のブランチ名の変更
+git branch # ローカルブランチの一覧
+git branch -a #リモートとローカルのブランチの一覧
+git branch -r #リモートブランチの一覧
+git checkout -b branch_name origin/branch_name #リモートブランチへチェックアウト
+
+【git merge】
+#masterブランチへのfeatureブランチを統合
+git checkout master
+git merge feature
+
+【git rebase】
+#featureブランチからmasterブランチ上にリベース
+git checkout feature
+git rebase master
+or
+git rebase master feature
+
+【HEADについて】
+# HEADとは現在チェックアウトされているコミットを指す単語です -- ようするに今作業中のコミットを表します。
+# HEADはいつも、作業中のツリーに反映されている最新のコミットを指します。作業ツリーへ変更を加える多くのgitコマンドはまずHEADから処理を始めます。
+# HEADは普段、ブランチ名（例えば、bugFixなど）を指します。コミットすれば、bugFixの状態が変更され、その変更がHEADから確認できるようになります。
+#あるコミットに対してHEADを変更する
+git checkout <commit hash>
+
+# 相対コミットは強力ですが、ここでは二つをご紹介します:
+# 一つずつ上へ移動させる^（カレット）
+# 複数回上へ移動させる ~<num>
+
+#HEADの1つ上のcommitにHEADを移動
+git checkout HEAD^
+#HEADの4つ上のcommitにHEADを移動
+git checkout HEAD~4
+#masterブランチを強制的にHEADの3つ前に移動
+git branch -f master HEAD~3
+#masterブランチを強制的にC6(とあるコミット)に移動
+git branch -f master C6
+
+【commitの取り消し】
+#commitを消す(local)
+git reset <移動先>
+#commitを消す(remote)
+git revert HEAD
